@@ -7,8 +7,9 @@ import os
 import hashlib
 import bleach
 from config import Config
-from models import db, User, Role, Book, Genre, Cover, BookGenre, Review
-from forms import LoginForm, RegistrationForm, BookForm, ReviewForm
+from app.forms import LoginForm, RegistrationForm, BookForm, ReviewForm
+from app import db
+from app.models import User, Role, Book, Genre, Cover, BookGenre, Review
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -17,6 +18,12 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Для выполнения данного действия необходимо пройти процедуру аутентификации'
+app = Flask(__name__)
+app.config.from_object(Config)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @login_manager.user_loader
 def load_user(user_id):
