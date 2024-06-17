@@ -7,8 +7,8 @@ from flask_bootstrap import Bootstrap
 
 db = SQLAlchemy()
 migrate = Migrate()
-login = LoginManager()
-login.login_view = 'login'
+login_manager = LoginManager()
+login_manager.login_view = 'login'
 bootstrap = Bootstrap()
 
 def create_app(config_class=Config):
@@ -17,10 +17,10 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    login.init_app(app)
+    login_manager.init_app(app)
     bootstrap.init_app(app)
 
-    from app import models
-    from app import routes
+    with app.app_context():
+        from app import routes, models
 
     return app
